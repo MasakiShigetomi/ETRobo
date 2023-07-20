@@ -42,7 +42,7 @@ static DistanceTracker *gDistanceTracker;
 // scene object
 static Scene gScenes[] = {
     //{ TURN_LEFT,   1250 * 1000, 0 },  // 左旋回1.25秒
-    //{ GO_STRAIGHT, 5000 * 1000, 0 },  // 直進5秒
+    { TURN_CLOCKWISE, 5000 * 1000, 0 },  // 直進5秒
     //{ TURN_LEFT,   1250 * 1000, 0 },  // 左旋回1.25秒
     { GO_STRAIGHT, 2000 * 1000, 0 }   // 直進2秒
 };

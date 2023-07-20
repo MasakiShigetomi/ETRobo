@@ -13,8 +13,15 @@ const int Walker::LOW    = 30;    // 低速
 const int Walker::NORMAL = 50;    // 通常
 const int Walker::HIGH   = 70;    // 高速
 
-const int Walker::RIGHT  = 0;     // 左方向
-const int Walker::LEFT   = 1;     // 右方向
+const int Walker::STRAIGHT = 0;
+const int Walker::RIGHT  = 1;     // 左方向
+const int Walker::LEFT   = 2;     // 右方向
+const int Walker::STOP   = 3;
+const int Walker::BACK   = 4;
+const int Walker::BACKRIGHT  = 5;
+const int Walker::BACKLEFT   = 6;
+const int Walker::CLOCKWISE  = 7;
+const int Walker::ACLOCKWISE = 8;
 
 /**
  * コンストラクタ
@@ -25,7 +32,7 @@ Walker::Walker(ev3api::Motor& leftWheel,
                                  ev3api::Motor& rightWheel)
     : mLeftWheel(leftWheel),
       mRightWheel(rightWheel),
-      mForward(HIGH),
+      mForward(LOW),
       mTurn(RIGHT) {
 }
 
@@ -34,15 +41,51 @@ Walker::Walker(ev3api::Motor& leftWheel,
  */
 void Walker::run() {
     // 左右モータに回転を指示する
-    const float Kp = 3;//1.8が最良
-    int left_a = ev3_motor_get_counts(EV3_PORT_C );
-    int right_a = ev3_motor_get_counts(EV3_PORT_B);
-    int gap_a = Kp * (15 - (left_a - right_a));
-    printf("%d\n",gap_a);
+    int rightPWM = 0;
+    int leftPWM = 0;
     
-    int rightPWM = mForward - gap_a;
-    int leftPWM = mForward + gap_a;
-
+    if(mTurn == STRAIGHT) {
+        const float Kp = 1.8;//1.8が最良
+        int left_a = ev3_motor_get_counts(EV3_PORT_C );
+        int right_a = ev3_motor_get_counts(EV3_PORT_B);
+        int gap_a = Kp * (10 - (left_a - right_a));//20が最良
+        printf("%d\n",gap_a);
+        rightPWM = mForward - gap_a;
+        leftPWM = mForward + gap_a;
+    } else if(mTurn == RIGHT) {
+        rightPWM = 0;
+        leftPWM = mForward;
+    } else if(mTurn == LEFT) {
+        rightPWM = mForward;
+        leftPWM = 0;
+    } else if(mTurn == STOP) {
+        rightPWM = 0;
+        leftPWM = 0;
+    } else if(mTurn == BACK) {
+        const float Kp = 1.8;//1.8が最良
+        int left_a = ev3_motor_get_counts(EV3_PORT_C );
+        int right_a = ev3_motor_get_counts(EV3_PORT_B);
+        int gap_a = Kp * (10 - (left_a - right_a));//20が最良
+        printf("%d\n",gap_a);
+        rightPWM = -(mForward - gap_a);
+        leftPWM = -(mForward + gap_a);
+    } else if(mTurn == BACKRIGHT) {
+        rightPWM = -mForward;
+        leftPWM = 0;
+    } else if(mTurn == BACKLEFT) {
+        rightPWM = 0;
+        leftPWM = -mForward;
+    } else if(mTurn == CLOCKWISE) {
+        rightPWM = mForward;
+        leftPWM = -mForward;
+    } else if(mTurn == ACLOCKWISE) {
+        rightPWM = -mForward;
+        leftPWM = mForward;
+    } else {
+        rightPWM = mForward;
+        leftPWM = mForward;
+    }
+   
     mRightWheel.setPWM(rightPWM);
     mLeftWheel.setPWM(leftPWM);
 }
