@@ -39,6 +39,7 @@ private:
     ev3api::Motor& mRightWheel;
     int mForward;
     int mTurn;
+    bool first_iteration;
 };
 
 #endif  // EV3_UNIT_WALKER_H_

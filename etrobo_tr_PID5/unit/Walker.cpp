@@ -23,6 +23,8 @@ const int Walker::BACKLEFT   = 6;
 const int Walker::CLOCKWISE  = 7;
 const int Walker::ACLOCKWISE = 8;
 
+bool first_iteration = true;
+
 /**
  * コンストラクタ
  * @param leftWheel  左モータ
@@ -45,11 +47,12 @@ void Walker::run() {
     int leftPWM = 0;
     
     if(mTurn == STRAIGHT) {
-        const float Kp = 1.8;//1.8が最良
+        const float Kp = 2.6;//1.8が最良
         int left_a = ev3_motor_get_counts(EV3_PORT_C );
         int right_a = ev3_motor_get_counts(EV3_PORT_B);
-        int gap_a = Kp * (10 - (left_a - right_a));//20が最良
-        printf("%d\n",gap_a);
+        printf("%d\n",left_a,right_a);
+        int gap_a = Kp * (20 - (left_a - right_a));//20が最良
+        //printf("%d\n",gap_a);
         rightPWM = mForward - gap_a;
         leftPWM = mForward + gap_a;
     } else if(mTurn == RIGHT) {
@@ -76,11 +79,11 @@ void Walker::run() {
         rightPWM = 0;
         leftPWM = -mForward;
     } else if(mTurn == CLOCKWISE) {
-        rightPWM = mForward;
-        leftPWM = -mForward;
-    } else if(mTurn == ACLOCKWISE) {
         rightPWM = -mForward;
         leftPWM = mForward;
+    } else if(mTurn == ACLOCKWISE) {
+        rightPWM = mForward;
+        leftPWM = -mForward;
     } else {
         rightPWM = mForward;
         leftPWM = mForward;
