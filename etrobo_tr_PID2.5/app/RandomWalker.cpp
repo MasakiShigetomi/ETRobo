@@ -22,18 +22,20 @@ const int RandomWalker::MAX_TIME = 2000 * 1000;   // 切り替え時間の最大
  * @param simpleTimer     タイマ
  */
 RandomWalker::RandomWalker(LineTracer* lineTracer,
-                           ScenarioTracer* scenarioTracer,
-                           const Starter* starter,
-                           SimpleTimer* simpleTimer,
-                           DistanceTracker* distanceTracker)
+                 LineMonitor* lineMonitor,
+                 ScenarioTracer* scenarioTracer,
+                 const Starter* starter,
+                 SimpleTimer* simpleTimer,
+                 DistanceTracker* distanceTracker)
     : mLineTracer(lineTracer),
+      mLineMonitor(lineMonitor),
       mScenarioTracer(scenarioTracer),
       mStarter(starter),
       mSimpleTimer(simpleTimer),
       mDistanceTracker(distanceTracker),
+      
       mState(UNDEFINED),
-      mTransitionCount(0),
-      colorSensor(PORT_2) {
+      mTransitionCount(0) {
     ev3api::Clock* clock = new ev3api::Clock();
 
     srand(clock->now());  // 乱数をリセットする
@@ -60,9 +62,6 @@ void RandomWalker::run() {
         break;
     case BROCK_CARRY:
         execBrockCarry();
-        break;
-    case STOP_HERE:
-        execStopHere();
         break;
     default:
         break;
@@ -108,11 +107,10 @@ void RandomWalker::execWaitingForStart() {
 void RandomWalker::execLineTracing() {
     // ReachedDistanceの引数を変更する
     if (mTransitionCount == 0) {
-        mDistanceTracker->SetDistance(14690);//ライントレース終了距離
+        mDistanceTracker->SetDistance(1469000);//ライントレース終了距離
     }
-    mSimpleTimer->now();
-    mScenarioTracer->run();
-    //printf("%d\n", mDistanceTracker->CountDistance());
+    mLineTracer->run();
+    printf("%d\n", mDistanceTracker->CountDistance());
     //printf("%d\n",mTransitionCount);
      
     if (mDistanceTracker->ReachedDistance()) {
@@ -121,14 +119,11 @@ void RandomWalker::execLineTracing() {
         mSimpleTimer->setTime(1650000);//1.7秒間タイマーセット
         mSimpleTimer->start();
     }
-
-    //赤検知→ブロック運び
-    if (colorSensor.getColorNumber() == 5) {
+    if (mLineMonitor->detectRed()) {
         mState = BROCK_CARRY;
-        mSimpleTimer->setTime(1650000);//1.7秒間タイマーセット
+        mSimpleTimer->setTime(1000000);
         mSimpleTimer->start();
     }
-
 }
 
 void RandomWalker::execScenarioTracing() {
@@ -144,14 +139,8 @@ void RandomWalker::execScenarioTracing() {
 }
 
 void RandomWalker::execBrockCarry() {
-    mScenarioTracer->run();//セットした時間低速直進
+    mScenarioTracer->run();
     if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
-
-        mState = STOP_HERE;
+    mSimpleTimer->stop();
     }
-}
-
-void RandomWalker::execStopHere() {
-
 }

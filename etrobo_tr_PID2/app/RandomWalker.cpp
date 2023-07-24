@@ -22,15 +22,18 @@ const int RandomWalker::MAX_TIME = 2000 * 1000;   // 切り替え時間の最大
  * @param simpleTimer     タイマ
  */
 RandomWalker::RandomWalker(LineTracer* lineTracer,
-                           ScenarioTracer* scenarioTracer,
-                           const Starter* starter,
-                           SimpleTimer* simpleTimer,
-                           DistanceTracker* distanceTracker)
+                 LineMonitor* lineMonitor,
+                 ScenarioTracer* scenarioTracer,
+                 const Starter* starter,
+                 SimpleTimer* simpleTimer,
+                 DistanceTracker* distanceTracker)
     : mLineTracer(lineTracer),
+      mLineMonitor(lineMonitor),
       mScenarioTracer(scenarioTracer),
       mStarter(starter),
       mSimpleTimer(simpleTimer),
       mDistanceTracker(distanceTracker),
+      
       mState(UNDEFINED),
       mTransitionCount(0) {
     ev3api::Clock* clock = new ev3api::Clock();
@@ -56,6 +59,9 @@ void RandomWalker::run() {
         break;
     case SCENARIO_TRACING:
         execScenarioTracing();
+        break;
+    case BROCK_CARRY:
+        execBrockCarry();
         break;
     default:
         break;
@@ -113,10 +119,15 @@ void RandomWalker::execLineTracing() {
         mSimpleTimer->setTime(1650000);//1.7秒間タイマーセット
         mSimpleTimer->start();
     }
+    if (mLineMonitor->detectRed()) {
+        mState = BROCK_CARRY;
+        mSimpleTimer->setTime(1000000);
+        mSimpleTimer->start();
+    }
 }
 
 void RandomWalker::execScenarioTracing() {
-        mScenarioTracer->run();//セットした時間低速直進
+    mScenarioTracer->run();//セットした時間低速直進
 
     if (mSimpleTimer->isTimedOut()) {
         mSimpleTimer->stop();
@@ -127,7 +138,9 @@ void RandomWalker::execScenarioTracing() {
     }
 }
 
-//void RandomWalker::execBrockCarry() {
-
+void RandomWalker::execBrockCarry() {
+    mScenarioTracer->run();
+    if (mSimpleTimer->isTimedOut()) {
+    mSimpleTimer->stop();
+    }
 }
-//

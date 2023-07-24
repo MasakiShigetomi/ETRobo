@@ -91,8 +91,8 @@ void Walker::run() {
    
     mRightWheel.setPWM(rightPWM);
     mLeftWheel.setPWM(leftPWM);
-    printf("%d\n",ev3_gyro_sensor_get_angle(EV3_PORT_3));//qp
-    printf("%d\n",ev3_gyro_sensor_get_rate(EV3_PORT_3));//qp
+    //printf("%d\n",ev3_gyro_sensor_get_angle(EV3_PORT_3));//qp
+    //printf("%d\n",ev3_gyro_sensor_get_rate(EV3_PORT_3));//qp
 }
 
 /**

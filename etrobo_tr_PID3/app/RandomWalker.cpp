@@ -101,7 +101,7 @@ void RandomWalker::execWaitingForStart() {
 void RandomWalker::execLineTracing() {
     // ReachedDistanceの引数を変更する
     if (mTransitionCount == 0) {
-        mDistanceTracker->SetDistance(14690);//ライントレース終了距離
+        mDistanceTracker->SetDistance(1469000);//ライントレース終了距離
     }
     mScenarioTracer->run();
     //printf("%d\n", mDistanceTracker->CountDistance());

@@ -44,10 +44,6 @@ void SimpleTimer::stop() {
     mTargetTime = 0;
 }
 
-void SimpleTimer::now() {
-    printf("%.2f\n",mClock.now());
-}
-
 /**
  * タイマ満期したか否か
  * @retval true  タイマ満期した

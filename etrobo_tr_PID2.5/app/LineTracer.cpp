@@ -50,10 +50,10 @@ void LineTracer::run() {
 
 float LineTracer::calc_prop_value(float color_val) {
     const float DELTA_T = 0.004;
-    const float Kp = 3.1;        // <1>
-    const float Ki = 0.16;
-    const float Kd = 0.05;
-    const int target = 10;        // <2>
+    const float Kp = 2.5;        // <1>
+    const float Ki = 0.03;
+    const float Kd = 0.004;
+    const int target = 20;        // <2>
 
     static float integral = 0;
     static float prev_error = 0;

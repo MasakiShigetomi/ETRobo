@@ -18,7 +18,6 @@ public:
     void setTime(uint32_t delay);
     void start();
     void stop();
-    void now();
     bool isTimedOut() const;
     bool isStarted() const;
 

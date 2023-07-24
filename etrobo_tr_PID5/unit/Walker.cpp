@@ -47,7 +47,7 @@ void Walker::run() {
     int leftPWM = 0;
     
     if(mTurn == STRAIGHT) {
-        const float Kp = 2.6;//1.8が最良
+        const float Kp = 1.8;//1.8が最良
         int left_a = ev3_motor_get_counts(EV3_PORT_C );
         int right_a = ev3_motor_get_counts(EV3_PORT_B);
         printf("%d\n",left_a,right_a);
