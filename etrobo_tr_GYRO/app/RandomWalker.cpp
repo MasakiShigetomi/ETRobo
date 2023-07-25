@@ -7,12 +7,8 @@
  *****************************************************************************/
 
 #include <stdlib.h>
-#include "Clock.h"
 #include "RandomWalker.h"
 
-// 定数宣言
-const int RandomWalker::MIN_TIME = 1000 * 1000;    // 切り替え時間の最小値
-const int RandomWalker::MAX_TIME = 2000 * 1000;   // 切り替え時間の最大値
 
 /**
  * コンストラクタ
@@ -24,21 +20,15 @@ const int RandomWalker::MAX_TIME = 2000 * 1000;   // 切り替え時間の最大
 RandomWalker::RandomWalker(LineTracer* lineTracer,
                            ScenarioTracer* scenarioTracer,
                            const Starter* starter,
-                           SimpleTimer* simpleTimer,
                            DistanceTracker* distanceTracker)
     : mLineTracer(lineTracer),
       mScenarioTracer(scenarioTracer),
       mStarter(starter),
-      mSimpleTimer(simpleTimer),
       mDistanceTracker(distanceTracker),
       mState(UNDEFINED),
       mTransitionCount(0),
       colorSensor(PORT_2) {
-    ev3api::Clock* clock = new ev3api::Clock();
 
-    srand(clock->now());  // 乱数をリセットする
-
-    delete clock;
 }
 
 /**
@@ -74,17 +64,14 @@ void RandomWalker::run() {
  * @retrun 乱数
  */
 int RandomWalker::getRandomTime() {
-    return MIN_TIME +
-        static_cast<int>(static_cast<double>(rand()) *
-                         (MAX_TIME - MIN_TIME + 1.0) / (1.0 + RAND_MAX));
+    //使わない
 }
 
 /**
  * シーン変更処理
  */
 void RandomWalker::modeChangeAction() {
-    mSimpleTimer->setTime(getRandomTime());
-    mSimpleTimer->start();
+    //使わない
 }
 
 /**
@@ -110,7 +97,6 @@ void RandomWalker::execLineTracing() {
     if (mTransitionCount == 0) {
         mDistanceTracker->SetDistance(14690);//ライントレース終了距離
     }
-    mSimpleTimer->now();
     mScenarioTracer->run();
     //printf("%d\n", mDistanceTracker->CountDistance());
     //printf("%d\n",mTransitionCount);
@@ -118,15 +104,11 @@ void RandomWalker::execLineTracing() {
     if (mDistanceTracker->ReachedDistance()) {
         mState = SCENARIO_TRACING;
         mTransitionCount++;  // 状態遷移の回数をインクリメント
-        mSimpleTimer->setTime(1650000);//1.7秒間タイマーセット
-        mSimpleTimer->start();
     }
 
     //赤検知→ブロック運び
     if (colorSensor.getColorNumber() == 5) {
         mState = BROCK_CARRY;
-        mSimpleTimer->setTime(1650000);//1.7秒間タイマーセット
-        mSimpleTimer->start();
     }
 
 }
@@ -134,22 +116,12 @@ void RandomWalker::execLineTracing() {
 void RandomWalker::execScenarioTracing() {
     mScenarioTracer->run();//セットした時間低速直進
 
-    if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
-
         mState = LINE_TRACING;
 
-        modeChangeAction();
-    }
 }
 
 void RandomWalker::execBrockCarry() {
     mScenarioTracer->run();//セットした時間低速直進
-    if (mSimpleTimer->isTimedOut()) {
-        mSimpleTimer->stop();
-
-        mState = STOP_HERE;
-    }
 }
 
 void RandomWalker::execStopHere() {

@@ -25,7 +25,6 @@ SimpleTimer::SimpleTimer(const ev3api::Clock& clock)
  */
 void SimpleTimer::setTime(uint32_t delay) {
     mDelayMs = delay;
-    printf("mDelayMs: %d\n", mDelayMs);
 }
 
 /**

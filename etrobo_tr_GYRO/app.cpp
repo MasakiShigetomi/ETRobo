@@ -36,6 +36,7 @@ static LineMonitor     *gLineMonitor;
 static Starter         *gStarter;
 static SimpleTimer     *gScenarioTimer;
 static SimpleTimer     *gWalkerTimer;
+static TimeKeeper      *gKeeperTimer;
 static LineTracer      *gLineTracer;
 static Scenario        *gScenario;
 static ScenarioTracer  *gScenarioTracer;
@@ -44,14 +45,14 @@ static DistanceTracker *gDistanceTracker;
 
 // scene object
 static Scene gScenes[] = {
-    { TURN_CLOCKWISE, 800 * 1000, 0 }, 
-    { ANTI_CLOCKWISE, 800 * 1000, 0 }, 
-    { TURN_CLOCKWISE, 800 * 1000, 0 }, 
-    { ANTI_CLOCKWISE, 800 * 1000, 0 }, 
+    //{ TURN_CLOCKWISE, 800 * 1000, 0 }, 
+    //{ ANTI_CLOCKWISE, 800 * 1000, 0 }, 
+    //{ TURN_CLOCKWISE, 800 * 1000, 0 }, 
+    //{ ANTI_CLOCKWISE, 800 * 1000, 0 }, 
     { GO_STRAIGHT, 8400 * 1000, 0 },  // 直進5秒
     { TURN_RIGHT, 250 * 1000, 0 },  // 直進2秒
-    { GO_STRAIGHT, 1400 * 1000, 0 }, 
-    { TURN_RIGHT, 330 * 1000, 0 }
+    { GO_STRAIGHT, 1800 * 1000, 0 }, 
+    { TURN_RIGHT, 310 * 1000, 0 }
 };
 
 /**
@@ -63,13 +64,15 @@ static void user_system_create() {
 
     // オブジェクトの作成
     gWalker          = new Walker(gLeftWheel,
-                                  gRightWheel);
+                                  gRightWheel,
+                                  gKeeperTimer);
     gDistanceTracker = new DistanceTracker(gLeftWheel,
                                         gRightWheel);                            
     gStarter         = new Starter(gTouchSensor);
     gLineMonitor     = new LineMonitor(gColorSensor);
     gScenarioTimer   = new SimpleTimer(gClock);
     gWalkerTimer     = new SimpleTimer(gClock);
+    gKeeperTimer     = new TimeKeeper(gClock);
     gLineTracer      = new LineTracer(gLineMonitor, gWalker,gDistanceTracker);
     gScenario        = new Scenario(0);
     gScenarioTracer  = new ScenarioTracer(gWalker,
@@ -78,7 +81,6 @@ static void user_system_create() {
     gRandomWalker    = new RandomWalker(gLineTracer,
                                         gScenarioTracer,
                                         gStarter,
-                                        gWalkerTimer,
                                         gDistanceTracker);
 
     // シナリオを構築する
@@ -102,6 +104,7 @@ static void user_system_destroy() {
     delete gLineTracer;
     delete gWalkerTimer;
     delete gScenarioTimer;
+    delete gKeeperTimer;
     delete gLineMonitor;
     delete gStarter;
     delete gWalker;

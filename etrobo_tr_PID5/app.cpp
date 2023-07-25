@@ -44,7 +44,7 @@ static Scene gScenes[] = {
     { GO_STRAIGHT, 8600 * 1000, 0 },  // 直進5秒
     { TURN_RIGHT, 250 * 1000, 0 },  // 直進2秒
     { GO_STRAIGHT, 1500 * 1000, 0 }, 
-    { TURN_RIGHT, 315 * 1000, 0 }
+    { TURN_RIGHT, 325 * 1000, 0 }
 };
 
 /**

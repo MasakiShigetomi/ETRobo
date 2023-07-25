@@ -10,7 +10,6 @@
 #define EV3_APP_RANDOMWALKER_H_
 
 #include "Starter.h"
-#include "SimpleTimer.h"
 #include "DistanceTracker.h"
 #include "LineTracer.h"
 #include "ScenarioTracer.h"
@@ -21,7 +20,6 @@ public:
     RandomWalker(LineTracer* lineTracer,
                  ScenarioTracer* scenarioTracer,
                  const Starter* starter,
-                 SimpleTimer* simpleTimer,
                  DistanceTracker* distanceTracker);
 
     void run();
@@ -36,14 +34,11 @@ private:
         STOP_HERE
     };
 
-    static const int MIN_TIME;
-    static const int MAX_TIME;
     int mTransitionCount; // 状態遷移の回数
     
     LineTracer* mLineTracer;
     ScenarioTracer* mScenarioTracer;
     const Starter* mStarter;
-    SimpleTimer* mSimpleTimer;
     DistanceTracker* mDistanceTracker;
     State mState;
     ColorSensor colorSensor;

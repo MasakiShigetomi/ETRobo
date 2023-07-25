@@ -6,6 +6,7 @@ APPL_CXXOBJS += \
 	Scenario.o \
 	ScenarioTracer.o \
 	RandomWalker.o \
+	TimeKeeper.o \
 	LineMonitor.o \
 	Starter.o \
 	DistanceTracker.o \
