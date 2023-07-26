@@ -15,7 +15,7 @@
 // 定数宣言
 const int Walker::LOW    = 30;    // 低速
 const int Walker::NORMAL = 50;    // 通常
-const int Walker::HIGH   = 90;    // 高速
+const int Walker::HIGH   = 100;    // 高速
 
 const int Walker::STRAIGHT = 0;
 const int Walker::RIGHT  = 1;     // 左方向
@@ -26,16 +26,13 @@ const int Walker::BACKRIGHT  = 5;
 const int Walker::BACKLEFT   = 6;
 const int Walker::CLOCKWISE  = 7;
 const int Walker::ACLOCKWISE = 8;
-const float P_GAIN = 0.0018; // Pゲイン
-const float D_GAIN = 0.0002; // Dゲイン
 const float T1 = 1.5;
-const float T2 = 8;
+const float T2 = 1;
 const float T3 = 1.5;
 const int Pmax = 100;
 const int Pmin = 5;
 
 float pForward;
-double prev_angle_sum = 0; // 前回までの角度の合計
 double prev_time_sum = 0; //経過時間の合計
 
 bool first_iteration = true;
@@ -67,8 +64,8 @@ void Walker::run() {
     // 左右モータに回転を指示する
     int rightPWM = 0;
     int leftPWM = 0;
-    float current_time_sum = 0;
     if(mTurn == STRAIGHT) {
+        float current_time_sum = 0;
         float time_diff;
         if (counter == 0) { // カウンターが0の場合、time_diffを0に設定する
             time_diff = 0;
@@ -78,26 +75,47 @@ void Walker::run() {
             float current_time_diff = time_diff;
             current_time_sum = prev_time_sum + current_time_diff; // 現在までの時間の合計を計算する
         }
-    mSimpleTimer->saveCurrentTime(); // 現在の時間を保存する
+        mSimpleTimer->saveCurrentTime(); // 現在の時間を保存する
 
-    float fPow;
-    if (current_time_sum >= T1) {
-        fPow = Pmax;
-    } else {
-        fPow = (Pmax - Pmin) / 2 * (-cos(M_PI / T1 * current_time_sum) + 1) + Pmin; //難しい計算する
-    }
-    int pForward = static_cast<int>(fPow); //floatの難しい計算の結果をintに変換する
+        float fPow;
+        if (current_time_sum >= T1) {
+            double prev_time_sum = 0;
+            fPow = Pmax;
+        } else {
+            fPow = (Pmax - Pmin) / 2 * (-cos(M_PI / T1 * current_time_sum) + 1) + Pmin; //難しい計算する
+        }
+        int pForward = static_cast<int>(fPow); //floatの難しい計算の結果をintに変換する
 
-    printf("%d\n",pForward);//ログ出力
+        printf("%d\n",pForward);//ログ出力
 
-    rightPWM = pForward; //モーターにパワーを設定する
-    leftPWM =  pForward;
-    prev_time_sum = current_time_sum; //前回までの時間の合計を更新する
-    counter++; // カウンターをインクリメントする
-}
+        rightPWM = pForward; //モーターにパワーを設定する
+        leftPWM =  pForward;
+        prev_time_sum = current_time_sum; //前回までの時間の合計を更新する
+        counter++; // カウンターをインクリメントする
+        }
      else if(mTurn == RIGHT) {
-        rightPWM = 0;
-        leftPWM = mForward;
+        //rightPWM = 0;
+        //leftPWM = mForward;
+
+        float current_time_sum = 0;
+        float time_diff;
+        if (counter == 0) { // カウンターが0の場合、time_diffを0に設定する
+            time_diff = 0;
+        } else {
+            time_diff = mSimpleTimer->getTimeDifference();// 時間の変化量を取得する
+            time_diff /= 1000000.0; // マイクロ秒から秒に変換する
+            float current_time_diff = time_diff;
+            current_time_sum = prev_time_sum + current_time_diff; // 現在までの時間の合計を計算する
+        }
+        mSimpleTimer->saveCurrentTime(); // 現在の時間を保存する
+        float fPow;
+
+        fPow = (Pmax - Pmin) / 2 * (cos(M_PI / T2 * current_time_sum) + 1) + Pmin; //難しい計算する
+        int pForward = static_cast<int>(fPow); //floatの難しい計算の結果をintに変換する
+        rightPWM = pForward; //モーターにパワーを設定する
+        leftPWM =  mForward;
+        prev_time_sum = current_time_sum; //前回までの時間の合計を更新する
+        counter++; // カウンターをインクリメントする
     } else if(mTurn == LEFT) {
         rightPWM = mForward;
         leftPWM = 0;

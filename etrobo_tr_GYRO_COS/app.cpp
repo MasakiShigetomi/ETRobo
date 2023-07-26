@@ -49,9 +49,9 @@ static Scene gScenes[] = {
     //{ ANTI_CLOCKWISE, 800 * 1000, 0 }, 
     //{ TURN_CLOCKWISE, 800 * 1000, 0 }, 
     //{ ANTI_CLOCKWISE, 800 * 1000, 0 }, 
-    { GO_STRAIGHT, 84000 * 1000, 0 },  // 直進5秒
-    { TURN_RIGHT, 250 * 1000, 0 },  // 直進2秒
-    { GO_STRAIGHT, 1800 * 1000, 0 }, 
+    { GO_STRAIGHT, 8000 * 1000, 0 },  // 直進5秒
+    { TURN_RIGHT, 1000 * 1000, 0 },  // 直進2秒
+    { GO_STRAIGHT, 18000 * 1000, 0 }, 
     { TURN_RIGHT, 310 * 1000, 0 }
 };
 
