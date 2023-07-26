@@ -44,14 +44,8 @@ void Walker::run() {
         rightPWM = mForward;
         leftPWM = 0;
     } else {
-        const float Kp = 1.8;//1.8が最良
-        int left_a = ev3_motor_get_counts(EV3_PORT_C );
-        int right_a = ev3_motor_get_counts(EV3_PORT_B);
-        int gap_a = Kp * (20 - (left_a - right_a));//20が最良
-        printf("%d\n",gap_a);
-    
-        int rightPWM = mForward - gap_a;
-        int leftPWM = mForward + gap_a;
+        int rightPWM = mForward;
+        int leftPWM = mForward;
 
     }
     

@@ -28,8 +28,6 @@ LineTracer::LineTracer(const LineMonitor* lineMonitor,
 void LineTracer::SetPWM(int pwm_l, int pwm_r) {
     rightWheel.setPWM(pwm_r);
     leftWheel.setPWM(pwm_l);
-    //走行距離表示
-    //printf("%d\n", mDistanceTracker->CountDistance());
 }
 
 
@@ -45,15 +43,15 @@ void LineTracer::run() {
     float turn = calc_prop_value(colorSensor.getBrightness()); // <1>
     int pwm_l = pwm - turn;      // <2>
     int pwm_r = pwm + turn;      // <2>
-    SetPWM(pwm_r * 0.7, pwm_l * 0.7);
+    SetPWM(pwm_r * 0.6, pwm_l * 0.6);
 }
 
 float LineTracer::calc_prop_value(float color_val) {
     const float DELTA_T = 0.004;
-    const float Kp = 0.9;        // <1>
-    const float Ki = 0.016;
-    const float Kd = 0.005;
-    const int target = 10;        // <2>
+    const float Kp = 2.5;        // <1>
+    const float Ki = 0.03;
+    const float Kd = 0.004;
+    const int target = 20;        // <2>
 
     static float integral = 0;
     static float prev_error = 0;
