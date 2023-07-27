@@ -11,6 +11,8 @@
 
 #include "Motor.h"
 #include "GyroSensor.h"
+#include "TimeKeeper.h"
+#include "ev3api.h"
 
 class Walker {
 public:

@@ -100,12 +100,10 @@ void RandomWalker::execWaitingForStart() {
 
 void RandomWalker::execLineTracing() {
     // ReachedDistanceの引数を変更する
-    if (mTransitionCount == 0) {
-        mDistanceTracker->SetDistance(14690);//ライントレース終了距離
+    if (mTransitionCount == 0) { 
+        mDistanceTracker->SetDistance(1000000000);//ライントレース終了距離 ※ほぼ永遠にライントレース
     }
-    mScenarioTracer->run();
-    printf("%d\n", mDistanceTracker->CountDistance());
-    //printf("%d\n",mTransitionCount);
+    mLineTracer->run();
      
     if (mDistanceTracker->ReachedDistance()) {
         mState = SCENARIO_TRACING;
@@ -116,7 +114,7 @@ void RandomWalker::execLineTracing() {
 }
 
 void RandomWalker::execScenarioTracing() {
-        mScenarioTracer->run();//セットした時間低速直進
+    mScenarioTracer->run();//セットした時間低速直進
 
     if (mSimpleTimer->isTimedOut()) {
         mSimpleTimer->stop();
@@ -127,7 +125,3 @@ void RandomWalker::execScenarioTracing() {
     }
 }
 
-//void RandomWalker::execBrockCarry() {
-
-//}
-//

@@ -7,11 +7,13 @@
  *****************************************************************************/
 
 #include "Walker.h"
+#include "ev3api.h"
+#include <time.h>
 
 // 定数宣言
 const int Walker::LOW    = 30;    // 低速
 const int Walker::NORMAL = 50;    // 通常
-const int Walker::HIGH   = 70;    // 高速
+const int Walker::HIGH   = 90;    // 高速
 
 const int Walker::STRAIGHT = 0;
 const int Walker::RIGHT  = 1;     // 左方向
@@ -22,6 +24,12 @@ const int Walker::BACKRIGHT  = 5;
 const int Walker::BACKLEFT   = 6;
 const int Walker::CLOCKWISE  = 7;
 const int Walker::ACLOCKWISE = 8;
+const float P_GAIN = 0.079; // Pゲイン
+const float D_GAIN = 0.001; // Dゲイン
+
+double prev_angle_sum = 0; // 前回までの角度の合計
+ev3api::Clock ev3clock; // クロックのインスタンスを作成する
+TimeKeeper timeKeeper(ev3clock); // TimeKeeperクラスのインスタンスを作成する
 
 bool first_iteration = true;
 
@@ -47,14 +55,19 @@ void Walker::run() {
     int leftPWM = 0;
     
     if(mTurn == STRAIGHT) {
-        const float Kp = 2.6;//1.8が最良
-        int left_a = ev3_motor_get_counts(EV3_PORT_C );
-        int right_a = ev3_motor_get_counts(EV3_PORT_B);
-        //printf("%d\n",left_a,right_a);
-        int gap_a = Kp * (20 - (left_a - right_a));//20が最良
-        //printf("%d\n",gap_a);
+        timeKeeper.saveCurrentTime(); // 現在の時間を保存する
+        uint32_t time_diff = timeKeeper.getTimeDifference(); // 時間の変化量を取得する
+        printf("%f\n",time_diff);
+        float current_angular_velocity = ev3_gyro_sensor_get_rate(EV3_PORT_3); // 現在の角速度を取得する
+        float current_angle_diff = current_angular_velocity * time_diff; // 角度の変化量を計算する
+        float current_angle_sum = prev_angle_sum + current_angle_diff; // 現在までの角度の合計を計算する
+        float angle_error = current_angle_sum; // 角度のずれを計算する
+        float gap_a = angle_error * P_GAIN + current_angular_velocity * D_GAIN; // モーター制御用の値を計算する
+        //printf("%f\n",gap_a);
         rightPWM = mForward - gap_a;
-        leftPWM = mForward + gap_a;
+        leftPWM =  mForward + gap_a;
+
+        prev_angle_sum = current_angle_sum; // 前回までの角度の合計を更新する
     } else if(mTurn == RIGHT) {
         rightPWM = 0;
         leftPWM = mForward;

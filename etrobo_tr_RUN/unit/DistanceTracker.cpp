@@ -8,7 +8,6 @@ DistanceTracker::DistanceTracker(ev3api::Motor& leftWheel,ev3api::Motor& rightWh
 }
 
 bool DistanceTracker::ReachedDistance() {
-    printf("%d\n",mTargetDistance);
     return (CountDistance() >= mTargetDistance) ? true : false;
 }
 
