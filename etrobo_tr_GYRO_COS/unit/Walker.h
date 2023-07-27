@@ -37,6 +37,7 @@ public:
     void init();
     void run();
     void setCommand(int forward, int turn);
+    void setup();
 
 private:
 
