@@ -9,10 +9,9 @@
 #ifndef EV3_UNIT_WALKER_H_
 #define EV3_UNIT_WALKER_H_
 
+#include "WalkCalculator.h"
 #include "Motor.h"
 #include "GyroSensor.h"
-#include "SimpleTimer.h"
-#include "ev3api.h"
 
 class Walker {
 public:
@@ -32,16 +31,15 @@ public:
 
     Walker(ev3api::Motor& leftWheel,
                     ev3api::Motor& rightWheel,
-                    SimpleTimer* WTimer);
+                    WalkCalculator* walkCalculator);
 
     void init();
     void run();
     void setCommand(int forward, int turn);
-    void setup();
+
 
 private:
-
-    SimpleTimer* mSimpleTimer;
+    WalkCalculator* mWalkCalculator;
     ev3api::Motor& mLeftWheel;
     ev3api::Motor& mRightWheel;
     int mForward;

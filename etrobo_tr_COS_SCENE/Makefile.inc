@@ -9,7 +9,8 @@ APPL_CXXOBJS += \
 	LineMonitor.o \
 	Starter.o \
 	DistanceTracker.o \
-	SimpleTimer.o
+	SimpleTimer.o \
+	WalkCalculator.o 
 
 SRCLANG := c++
 

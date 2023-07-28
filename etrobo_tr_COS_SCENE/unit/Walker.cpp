@@ -8,9 +8,6 @@
 #include <stdlib.h>
 #include "Walker.h"
 #include "ev3api.h"
-#include <time.h>
-#include <cmath>
-#include "Clock.h"
 
 // 定数宣言
 const int Walker::LOW    = 30;    // 低速
@@ -33,11 +30,8 @@ const int Pmax = 100;
 const int Pmin = 5;
 const int CPmin = 55; //カーブ用の最小値
 
-float pForward;
-static double prev_time_sum = 0; //経過時間の合計
-
 bool first_iteration = true;
-static int counter = 0;
+
 /**
  * コンストラクタ
  * @param leftWheel  左モータ
@@ -45,17 +39,12 @@ static int counter = 0;
  */
 Walker::Walker(ev3api::Motor& leftWheel,
                                  ev3api::Motor& rightWheel,
-                                 SimpleTimer* WTimer)
+                                 WalkCalculator* walkCalculator)
     : mLeftWheel(leftWheel),
       mRightWheel(rightWheel),
       mForward(LOW),
       mTurn(RIGHT),
-      mSimpleTimer(WTimer) {
-    ev3api::Clock* clock = new ev3api::Clock();
-
-    srand(clock->now());  // 乱数をリセットする
-
-    delete clock;
+      mWalkCalculator(walkCalculator) {
 }
 
 /**
@@ -66,66 +55,16 @@ void Walker::run() {
     int rightPWM = 0;
     int leftPWM = 0;
     if(mTurn == STRAIGHT) {
-
-        float current_time_sum = 0;
-        float time_diff;
-
-        if (counter == 0) { // カウンターが0の場合、time_diffを0に設定する
-            time_diff = 0;
-        } else {
-            time_diff = mSimpleTimer->getTimeDifference();// 時間の変化量を取得する
-            time_diff /= 1000000.0; // マイクロ秒から秒に変換する
-            float current_time_diff = time_diff;
-            current_time_sum = prev_time_sum + current_time_diff; // 現在までの時間の合計を計算する
-        }
-        mSimpleTimer->saveCurrentTime(); // 現在の時間を保存する
-
-        float fPow;
-
-        if (current_time_sum >= T1) {
-            double prev_time_sum = 0;
-            fPow = Pmax;
-        } else {
-            fPow = (Pmax - Pmin) / 2 * (-cos(M_PI / T1 * current_time_sum) + 1) + Pmin; //難しい計算する
-        }
-
-        int pForward = static_cast<int>(fPow); //floatの難しい計算の結果をintに変換する
+        int pForward = mWalkCalculator->calcScurveAccel(T1, Pmax, Pmin);
         //printf("%d\n",pForward);//ログ出力
         rightPWM = pForward; //モーターにパワーを設定する
         leftPWM =  pForward;
-        prev_time_sum = current_time_sum; //前回までの時間の合計を更新する
-        counter++; // カウンターをインクリメントする
         }
      else if(mTurn == RIGHT) {
-
-        float current_time_sum = 0;
-        float time_diff;
-
-        if (counter == 0) { // カウンターが0の場合、time_diffを0に設定する
-            time_diff = 0;
-        } else {
-            time_diff = mSimpleTimer->getTimeDifference();// 時間の変化量を取得する
-            time_diff /= 1000000.0; // マイクロ秒から秒に変換する
-            float current_time_diff = time_diff;
-            current_time_sum = prev_time_sum + current_time_diff; // 現在までの時間の合計を計算する
-        }
-
-        mSimpleTimer->saveCurrentTime(); // 現在の時間を保存する
-        float fPow;
-        
-        if (current_time_sum >= T2 * 2) {
-            double prev_time_sum = 0;
-            fPow = Pmax;
-        } else {
-            fPow = (Pmax - CPmin) / 2 * (cos(M_PI / T2 * current_time_sum) + 1) + CPmin; //難しい計算する
-        }
-        int pForward = static_cast<int>(fPow); //floatの難しい計算の結果をintに変換する
+        int pForward = mWalkCalculator->calcScurveCurve(T2, Pmax, CPmin);
         //printf("%d\n",pForward);//ログ出力
         rightPWM = pForward; //モーターにパワーを設定する
         leftPWM =  mForward;
-        prev_time_sum = current_time_sum; //前回までの時間の合計を更新する
-        counter++; // カウンターをインクリメントする
-
     } else if(mTurn == LEFT) {
         rightPWM = mForward;
         leftPWM = 0;
@@ -176,8 +115,3 @@ void Walker::setCommand(int forward, int turn) {
     mTurn    = turn;
 }
 
-void Walker::setup() {
-    printf("RESET!!!");
-    prev_time_sum = 0;
-    counter = 0;
-}

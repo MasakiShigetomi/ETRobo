@@ -42,6 +42,7 @@ static Scenario        *gScenario;
 static ScenarioTracer  *gScenarioTracer;
 static RandomWalker    *gRandomWalker;
 static DistanceTracker *gDistanceTracker;
+static WalkCalculator  *gWalkCalculator;
 
 // scene object
 static Scene gScenes[] = {
@@ -69,16 +70,18 @@ static void user_system_create() {
     gKeeperTimer     = new SimpleTimer(gClock);
     gWalker          = new Walker(gLeftWheel,
                                   gRightWheel,
-                                  gKeeperTimer);
+                                  gWalkCalculator);
     gLineTracer      = new LineTracer(gLineMonitor, gWalker,gDistanceTracker);
     gScenario        = new Scenario(0);
     gScenarioTracer  = new ScenarioTracer(gWalker,
+                                          gWalkCalculator,
                                           gScenario,
                                           gScenarioTimer);
     gRandomWalker    = new RandomWalker(gLineTracer,
                                         gScenarioTracer,
                                         gStarter,
                                         gDistanceTracker);
+    gWalkCalculator  = new WalkCalculator(gKeeperTimer);
 
     // シナリオを構築する
     for (uint32_t i = 0; i < (sizeof(gScenes)/sizeof(gScenes[0])); i++) {
@@ -106,6 +109,7 @@ static void user_system_destroy() {
     delete gStarter;
     delete gWalker;
     delete gDistanceTracker;
+    delete gWalkCalculator;
 }
 
 /**
