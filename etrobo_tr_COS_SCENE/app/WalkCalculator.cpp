@@ -1,9 +1,10 @@
 #include <stdlib.h>
-#include "Walker.h"
 #include "ev3api.h"
 #include <time.h>
 #include <cmath>
 #include "Clock.h"
+
+#include "WalkCalculator.h"
 
 float pForward;
 static double prev_time_sum = 0; //経過時間の合計
