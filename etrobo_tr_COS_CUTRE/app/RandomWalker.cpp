@@ -17,6 +17,7 @@
  * @param starter         スタータ  
  * @param simpleTimer     タイマ
  */
+//ディスタンストラッカーなど状使用しないものも宣言しています
 RandomWalker::RandomWalker(LineTracer* lineTracer,
                            ScenarioTracer* scenarioTracer,
                            const Starter* starter,
@@ -32,7 +33,7 @@ RandomWalker::RandomWalker(LineTracer* lineTracer,
 }
 
 /**
- * ランダム走行する
+ * スタートを検知し、シナリオ走行する
  */
 void RandomWalker::run() {
     switch (mState) {
@@ -42,17 +43,8 @@ void RandomWalker::run() {
     case WAITING_FOR_START:
         execWaitingForStart();
         break;
-    case LINE_TRACING:
-        execLineTracing();
-        break;
     case SCENARIO_TRACING:
         execScenarioTracing();
-        break;
-    case BROCK_CARRY:
-        execBrockCarry();
-        break;
-    case STOP_HERE:
-        execStopHere();
         break;
     default:
         break;
@@ -60,18 +52,16 @@ void RandomWalker::run() {
 }
 
 /**
- * 乱数を取得する
+ * 乱数を取得する　※不使用
  * @retrun 乱数
  */
 int RandomWalker::getRandomTime() {
-    //使わない
 }
 
 /**
- * シーン変更処理
+ * シーン変更処理　※不使用
  */
 void RandomWalker::modeChangeAction() {
-    //使わない
 }
 
 /**
@@ -86,44 +76,17 @@ void RandomWalker::execUndefined() {
  */
 void RandomWalker::execWaitingForStart() {
     if (mStarter->isPushed()) {
-        mState = LINE_TRACING;
+        mState = SCENARIO_TRACING;
 
         modeChangeAction();
     }
 }
 
-void RandomWalker::execLineTracing() {
-    // ReachedDistanceの引数を変更する
-    if (mTransitionCount == 0) {
-        mDistanceTracker->SetDistance(14690);//ライントレース終了距離
-    }
-    mScenarioTracer->run();
-    //printf("%d\n", mDistanceTracker->CountDistance());
-    //printf("%d\n",mTransitionCount);
-     
-    if (mDistanceTracker->ReachedDistance()) {
-        mState = SCENARIO_TRACING;
-        mTransitionCount++;  // 状態遷移の回数をインクリメント
-    }
-
-    //赤検知→ブロック運び
-    if (colorSensor.getColorNumber() == 5) {
-        mState = BROCK_CARRY;
-    }
-
-}
-
+/**
+ * シナリオトレース開始
+ */
 void RandomWalker::execScenarioTracing() {
-    mScenarioTracer->run();//セットした時間低速直進
 
-        mState = LINE_TRACING;
-
-}
-
-void RandomWalker::execBrockCarry() {
-    mScenarioTracer->run();//セットした時間低速直進
-}
-
-void RandomWalker::execStopHere() {
+    mScenarioTracer->run();//シナリオに従い走行開始
 
 }

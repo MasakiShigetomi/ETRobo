@@ -35,7 +35,7 @@ public:
                     SimpleTimer* WTimer);
 
     void init();
-    void run();
+    void run(int ContVal = 10000);
     void setCommand(int forward, int turn);
     void setup();
     int calcScurve(float AT, int Pmax, int Pmin, int repeat, bool accel);

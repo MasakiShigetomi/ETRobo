@@ -19,7 +19,8 @@ enum SceneCommands {
     BACK_LEFT,
     TURN_CLOCKWISE,
     ANTI_CLOCKWISE,
-    MASSUGU
+    MASSUGU,
+    LINE_TRACING
 };
 
 struct Scene {

@@ -6,7 +6,6 @@
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 #include "LineTracer.h"
-#include "DistanceTracker.h"
 #include <stdio.h>
 #include<math.h>
 
@@ -25,14 +24,6 @@ LineTracer::LineTracer(const LineMonitor* lineMonitor,
       mIsInitialized(false) {
 }
 
-void LineTracer::SetPWM(int pwm_l, int pwm_r) {
-    rightWheel.setPWM(pwm_r);
-    leftWheel.setPWM(pwm_l);
-    //走行距離表示
-    //printf("%d\n", mDistanceTracker->CountDistance());
-}
-
-
 /**
  * ライントレースする
  */
@@ -41,13 +32,14 @@ void LineTracer::run() {
         mWalker->init();
         mIsInitialized = true;
     }
-
     float turn = calc_prop_value(colorSensor.getBrightness()); // <1>
-    int pwm_l = pwm - turn;      // <2>
-    int pwm_r = pwm + turn;      // <2>
-    SetPWM(pwm_r * 0.7, pwm_l * 0.7);
+    int intTurn = static_cast<int>(turn);
+    mWalker->run(intTurn); //PID制御値を引数に、walkerのrunメソッドを呼び出す
 }
 
+/**
+ * PID制御の計算を行う
+ */
 float LineTracer::calc_prop_value(float color_val) {
     const float DELTA_T = 0.004;
     const float Kp = 0.9;        // <1>

@@ -45,6 +45,7 @@ Walker::Walker(ev3api::Motor& leftWheel,
       mForward(LOW),
       mTurn(RIGHT),
       mSimpleTimer(WTimer) {
+
         //無くても動くことが判明
     //ev3api::Clock* clock = new ev3api::Clock();
 
@@ -56,51 +57,57 @@ Walker::Walker(ev3api::Motor& leftWheel,
 /**
  * 走行する
  */
-void Walker::run() {
+void Walker::run(int ContVal) {
     // 左右モータに回転を指示する
     int rightPWM = 0;
     int leftPWM = 0;
-    if(mTurn == STRAIGHT) {
-        int pForward = calcScurve(1.2, 100, 5, 1, true);
-        
-        rightPWM = -pForward; //モーターにパワーを設定する
-        leftPWM =  -pForward;
-        
-    } else if(mTurn == RIGHT) {
-        int pForward = calcScurve(2.18, 100, 52, 2, false);
-        
-        rightPWM = -mForward; //モーターにパワーを設定する
-        leftPWM =  -pForward;
+    if (ContVal == 10000) { //デフォルト引数が10000のため、引数無しにrunメソッドを呼び出すとコマンドに応じた通常走行を行う
+        if(mTurn == STRAIGHT) {
+            int pForward = calcScurve(1.2, 100, 5, 1, true);
+            
+            rightPWM = -pForward; //モーターにパワーを設定する
+            leftPWM =  -pForward;
+            
+        } else if(mTurn == RIGHT) {
+            int pForward = calcScurve(2.18, 100, 52, 2, false);
+            
+            rightPWM = -mForward; 
+            leftPWM =  -pForward;
 
-    } else if(mTurn == LEFT) {
-        rightPWM = mForward;
-        leftPWM = 0;
-    } else if(mTurn == STOP) {
-        rightPWM = 0;
-        leftPWM = 0;
-    } else if(mTurn == BACK) {
-        rightPWM = -mForward;
-        leftPWM = -mForward;
-    } else if(mTurn == BACKRIGHT) {
-        rightPWM = -mForward;
-        leftPWM = 0;
-    } else if(mTurn == BACKLEFT) {
-        rightPWM = 0;
-        leftPWM = -mForward;
-    } else if(mTurn == CLOCKWISE) {
-        rightPWM = -mForward;
-        leftPWM = mForward;
-    } else if(mTurn == ACLOCKWISE) {
-        rightPWM = mForward;
-        leftPWM = -mForward;
-    } else {
-        rightPWM = mForward;
-        leftPWM = mForward;
-    }
-   
+        } else if(mTurn == LEFT) {
+            rightPWM = mForward;
+            leftPWM = 0;
+        } else if(mTurn == STOP) {
+            rightPWM = 0;
+            leftPWM = 0;
+        } else if(mTurn == BACK) {
+            rightPWM = -mForward;
+            leftPWM = -mForward;
+        } else if(mTurn == BACKRIGHT) {
+            rightPWM = -mForward;
+            leftPWM = 0;
+        } else if(mTurn == BACKLEFT) {
+            rightPWM = 0;
+            leftPWM = -mForward;
+        } else if(mTurn == CLOCKWISE) {
+            rightPWM = -mForward;
+            leftPWM = mForward;
+        } else if(mTurn == ACLOCKWISE) {
+            rightPWM = mForward;
+            leftPWM = -mForward;
+        } else {
+            rightPWM = mForward;
+            leftPWM = mForward;
+        }
+   } else {
+        int pwm_l = mForward - ContVal;      
+        int pwm_r = mForward + ContVal; 
+        rightPWM =  pwm_l * 0.6;
+        leftPWM =   pwm_r * 0.6;
+   }
     mRightWheel.setPWM(rightPWM);
     mLeftWheel.setPWM(leftPWM);
-    printf("%d\n",ev3_gyro_sensor_get_angle(EV3_PORT_3));
+    printf("%d\n",ev3_gyro_sensor_get_angle(EV3_PORT_3)); //ジャイロセンサーテスト用
 }
 
 /**

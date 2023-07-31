@@ -10,12 +10,14 @@
 #define EV3_APP_SCENARIOTRACER_H_
 
 #include "Walker.h"
+#include "LineTracer.h"
 #include "SimpleTimer.h"
 #include "Scenario.h"
 
 class ScenarioTracer {
 public:
     ScenarioTracer(Walker* walker,
+                   LineTracer* lineTracer,
                    Scenario* scenario,
                    SimpleTimer* timer);
 
@@ -29,6 +31,7 @@ private:
     };
 
     Walker* mWalker;
+    LineTracer* mLineTracer;
     Scenario* mScenario;
     SimpleTimer* mSimpleTimer;
     State mState;

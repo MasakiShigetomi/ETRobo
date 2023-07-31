@@ -29,9 +29,7 @@ private:
         UNDEFINED,
         WAITING_FOR_START,
         LINE_TRACING,
-        SCENARIO_TRACING,
-        BROCK_CARRY,
-        STOP_HERE
+        SCENARIO_TRACING
     };
 
     int mTransitionCount; // 状態遷移の回数
@@ -47,10 +45,7 @@ private:
     void modeChangeAction();
     void execUndefined();
     void execWaitingForStart();
-    void execLineTracing();
     void execScenarioTracing();
-    void execBrockCarry();
-    void execStopHere();
 };
 
 #endif  // EV3_APP_RANDOMWALKER_H_
