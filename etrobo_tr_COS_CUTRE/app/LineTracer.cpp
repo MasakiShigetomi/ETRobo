@@ -13,10 +13,8 @@
  * コンストラクタ
  */
 LineTracer::LineTracer(const LineMonitor* lineMonitor,
-                       Walker* walker,
                        DistanceTracker* distanceTracker)
     : mLineMonitor(lineMonitor),
-      mWalker(walker),
       mDistanceTracker(distanceTracker),
       leftWheel(PORT_C),
       rightWheel(PORT_B),
@@ -27,14 +25,14 @@ LineTracer::LineTracer(const LineMonitor* lineMonitor,
 /**
  * ライントレースする
  */
-void LineTracer::run() {
+int LineTracer::run() {
     if (mIsInitialized == false) {
-        mWalker->init();
+        //角位置をリセットする理由が見当たらない+Walkerをインクルードするのが手間なのでコメントアウト
+        //mWalker->init(); 
         mIsInitialized = true;
     }
     float turn = calc_prop_value(colorSensor.getBrightness()); // <1>
-    int intTurn = static_cast<int>(turn);
-    mWalker->run(intTurn); //PID制御値を引数に、walkerのrunメソッドを呼び出す
+    return turn;
 }
 
 /**
@@ -42,10 +40,10 @@ void LineTracer::run() {
  */
 float LineTracer::calc_prop_value(float color_val) {
     const float DELTA_T = 0.004;
-    const float Kp = 0.9;        // <1>
-    const float Ki = 0.016;
-    const float Kd = 0.005;
-    const int target = 10;        // <2>
+    const float Kp = 2.5;        // <1>
+    const float Ki = 0.03;
+    const float Kd = 0.004;
+    const int target = 20;        // <2>
 
     static float integral = 0;
     static float prev_error = 0;
@@ -58,8 +56,6 @@ float LineTracer::calc_prop_value(float color_val) {
     float p = Kp * diff[1];
     float i = Ki * integral;
     float d = Kd * (diff[1] - diff[0]) / DELTA_T;
-    //P値表示
-    //printf("p = %.2f\n", p);
 
     return p + i + d;
 }

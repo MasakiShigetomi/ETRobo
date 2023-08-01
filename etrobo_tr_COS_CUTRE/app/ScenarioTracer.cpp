@@ -57,32 +57,32 @@ void ScenarioTracer::initAction() {
  */
 void ScenarioTracer::setCommand(SceneCommands command) {
     int turn = -1;
-    if (command == LINE_TRACING) {
-      mLineTracer->run();
-      } else {
-      if (command == GO_STRAIGHT) {
-        turn = Walker::STRAIGHT;
-      } else if (command == TURN_LEFT) {
-        turn = Walker::LEFT;
-      } else if (command == TURN_RIGHT) {
-        turn = Walker::RIGHT;
-      } else if (command == STOP_HERE) {
-        turn = Walker::STOP;
-      } else if (command == BACK_STRAIGHT) {
-        turn = Walker::BACK;
-      } else if (command == BACK_RIGHT) {
-        turn = Walker::BACKRIGHT;
-      } else if (command == BACK_LEFT) {
-        turn = Walker::BACKLEFT;
-      } else if (command == TURN_CLOCKWISE) {
-        turn = Walker::CLOCKWISE;
-      } else if (command == ANTI_CLOCKWISE) {
-        turn = Walker::ACLOCKWISE;
-      } 
-
-      mWalker->setCommand(Walker::HIGH,turn);
+    
+    if (command == GO_STRAIGHT) {
+      turn = Walker::STRAIGHT;
+    } else if (command == TURN_LEFT) {
+      turn = Walker::LEFT;
+    } else if (command == TURN_RIGHT) {
+      turn = Walker::RIGHT;
+    } else if (command == STOP_HERE) {
+      turn = Walker::STOP;
+    } else if (command == BACK_STRAIGHT) {
+      turn = Walker::BACK;
+    } else if (command == BACK_RIGHT) {
+      turn = Walker::BACKRIGHT;
+    } else if (command == BACK_LEFT) {
+      turn = Walker::BACKLEFT;
+    } else if (command == TURN_CLOCKWISE) {
+      turn = Walker::CLOCKWISE;
+    } else if (command == ANTI_CLOCKWISE) {
+      turn = Walker::ACLOCKWISE;
+    } else if (command == LINE_TRACING) {
+      turn = Walker::LINETRACE;
     }
-}
+
+    mWalker->setCommand(Walker::HIGH,turn);
+  }
+    
 /**
  * シーン変更処理
  */

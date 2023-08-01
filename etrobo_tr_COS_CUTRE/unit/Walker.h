@@ -12,6 +12,7 @@
 #include "Motor.h"
 #include "GyroSensor.h"
 #include "SimpleTimer.h"
+#include "LineTracer.h"
 #include "ev3api.h"
 
 class Walker {
@@ -29,10 +30,12 @@ public:
     static const int BACKLEFT;
     static const int CLOCKWISE;
     static const int ACLOCKWISE;
+    static const int LINETRACE;
 
     Walker(ev3api::Motor& leftWheel,
                     ev3api::Motor& rightWheel,
-                    SimpleTimer* WTimer);
+                    SimpleTimer* WTimer,
+                    LineTracer* lineTracer);
 
     void init();
     void run(int ContVal = 10000);
@@ -43,6 +46,7 @@ public:
 private:
 
     SimpleTimer* mSimpleTimer;
+    LineTracer* mLineTracer;
     ev3api::Motor& mLeftWheel;
     ev3api::Motor& mRightWheel;
     int mForward;

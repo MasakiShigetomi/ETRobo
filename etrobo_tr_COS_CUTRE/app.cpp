@@ -45,7 +45,7 @@ static DistanceTracker *gDistanceTracker;
 
 // scene object
 static Scene gScenes[] = {
-    //{ LINE_TRACING, 10000 * 1000, 0 }, //ライントレーステスト
+    { LINE_TRACING, 100000 * 1000, 0 }, //ライントレーステスト
     { GO_STRAIGHT, 6200 * 1000, 0 },  // 直進5秒
     { TURN_RIGHT, 4360 * 1000, 0 },  // 直進2秒
     { BACK_STRAIGHT, 18000 * 1000, 0 }, 
@@ -68,12 +68,14 @@ static void user_system_create() {
     gScenarioTimer   = new SimpleTimer(gClock);
     gWalkerTimer     = new SimpleTimer(gClock);
     gKeeperTimer     = new SimpleTimer(gClock);
+     
+    gLineTracer      = new LineTracer(gLineMonitor,
+                                      //gWalker,
+                                      gDistanceTracker);
     gWalker          = new Walker(gLeftWheel,
                                   gRightWheel,
-                                  gKeeperTimer);
-    gLineTracer      = new LineTracer(gLineMonitor,
-                                      gWalker,
-                                      gDistanceTracker);
+                                  gKeeperTimer,
+                                  gLineTracer);                                 
     gScenario        = new Scenario(0);
     gScenarioTracer  = new ScenarioTracer(gWalker,
                                           gLineTracer,

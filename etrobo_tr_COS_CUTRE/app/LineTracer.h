@@ -12,7 +12,6 @@
 
 
 #include "LineMonitor.h"
-#include "Walker.h"
 #include "DistanceTracker.h"
 #include "Motor.h"
 #include "ColorSensor.h"
@@ -22,16 +21,14 @@ using namespace ev3api;
 class LineTracer {
 public:
     LineTracer(const LineMonitor* lineMonitor,
-               Walker* walker,
                DistanceTracker* distanceTracker);
 
-    void run();
+    int run();
     void SetPWM(int pwm_l, int pwm_r);
 
 private:
     const LineMonitor* mLineMonitor;
     DistanceTracker* mDistanceTracker;
-    Walker* mWalker;
     bool mIsInitialized;
     int calcDirection(bool isOnLine);
     Motor leftWheel;
