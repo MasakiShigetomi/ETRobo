@@ -17,12 +17,14 @@
 ScenarioTracer::ScenarioTracer(Walker* walker,
                                LineTracer* lineTracer,
                                Scenario* scenario,
-                               SimpleTimer* timer)
+                               SimpleTimer* timer,
+                               LineMonitor* linemonitor)
     : mWalker(walker),
       mLineTracer(lineTracer),
       mScenario(scenario),
       mSimpleTimer(timer),
-      mState(UNDEFINED) {
+      mState(UNDEFINED),
+      mLineMonitor(linemonitor) {
 }
 
 /**
@@ -60,24 +62,40 @@ void ScenarioTracer::setCommand(SceneCommands command) {
     
     if (command == GO_STRAIGHT) {
       turn = Walker::STRAIGHT;
+      printf("GO_STRAIGHT");
     } else if (command == TURN_LEFT) {
       turn = Walker::LEFT;
-    } else if (command == TURN_RIGHT) {
-      turn = Walker::RIGHT;
+      printf("TURN_LEFT");
+    } else if (command == TURN_RIGHT_S) {
+      turn = Walker::RIGHTS;
+      printf("TURN_RIGHT_S");
     } else if (command == STOP_HERE) {
       turn = Walker::STOP;
+      printf("STOP_HERE");
     } else if (command == BACK_STRAIGHT) {
       turn = Walker::BACK;
+      printf("BACK_STRAIGHT");
     } else if (command == BACK_RIGHT) {
       turn = Walker::BACKRIGHT;
+      printf("BACK_RIGHT");
     } else if (command == BACK_LEFT) {
       turn = Walker::BACKLEFT;
+      printf("BACK_LEFT");
     } else if (command == TURN_CLOCKWISE) {
       turn = Walker::CLOCKWISE;
+      printf("TURN_CLOCKWISE");
     } else if (command == ANTI_CLOCKWISE) {
       turn = Walker::ACLOCKWISE;
+      printf("ANTI_CLOCKWISE");
     } else if (command == LINE_TRACING) {
       turn = Walker::LINETRACE;
+      printf("LINE_TRACING");
+    }else if (command == GO_STRAIGHT_S) {
+      turn = Walker::STRAIGHTS;
+      printf("GO_STRAIGHT_S");
+    } else if (command == TURN_RIGHT) {
+      turn = Walker::RIGHT;
+      printf("TURN_RIGHT");
     }
 
     mWalker->setCommand(Walker::HIGH,turn);
@@ -121,7 +139,10 @@ void ScenarioTracer::execInitial() {
 void ScenarioTracer::execWalking() {
     mWalker->run();             // do アクティビティ
 
-    if (mSimpleTimer->isTimedOut()) {   // イベントチェック
+    if (mLineMonitor->RedDetector()) {
+        modeChangeAction();
+    }
+    else if (mSimpleTimer->isTimedOut()) {   // イベントチェック
         mSimpleTimer->stop();   // exit アクション
 
         modeChangeAction();    // entry アクション(WALKING)

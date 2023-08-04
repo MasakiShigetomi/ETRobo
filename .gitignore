@@ -8,4 +8,3 @@ __race/
 log.txt
 *.md5sum
 result.json
-simdist/
