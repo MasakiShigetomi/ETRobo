@@ -61,7 +61,7 @@ static Scene gScenes[] = {
     // { BACK_RIGHT, 520 * 1000, 0 },
     // { STOP_HERE, 2000 * 1000, 0 },
     // { GO_STRAIGHT_S, 6000 * 1000, 0 },
-    // { STOP_HERE, 20000000 * 1000, 0 }
+     { STOP_HERE, 20000000 * 1000, 0 }
 };
 
 /**
