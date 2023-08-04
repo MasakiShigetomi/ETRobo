@@ -18,7 +18,7 @@ const int Walker::NORMAL = 50;    // 通常
 const int Walker::HIGH   = 100;    // 高速
 
 const int Walker::STRAIGHT = 0;
-const int Walker::RIGHT  = 1;     // 左方向
+const int Walker::RIGHTS  = 1;     // 左方向
 const int Walker::LEFT   = 2;     // 右方向
 const int Walker::STOP   = 3;
 const int Walker::BACK   = 4;
@@ -28,6 +28,7 @@ const int Walker::CLOCKWISE  = 7;
 const int Walker::ACLOCKWISE = 8;
 const int Walker::LINETRACE  = 9;
 const int Walker::STRAIGHTS  = 10;
+const int Walker::RIGHT  = 11;
 
 float pForward;
 static double prev_time_sum = 0; //経過時間の合計
@@ -46,7 +47,7 @@ Walker::Walker(ev3api::Motor& leftWheel,
     : mLeftWheel(leftWheel),
       mRightWheel(rightWheel),
       mForward(LOW),
-      mTurn(RIGHT),
+      mTurn(RIGHTS),
       mSimpleTimer(WTimer),
       mLineTracer(lineTracer) {
 
@@ -71,7 +72,7 @@ void Walker::run(int ContVal) {
         rightPWM = -pForward; //モーターにパワーを設定する
         leftPWM =  -pForward;
         
-    } else if(mTurn == RIGHT) {
+    } else if(mTurn == RIGHTS) {
         int pForward = calcScurve(2.18, 100, 52, 2, false);
         rightPWM = -mForward; 
         leftPWM =  -pForward;
@@ -113,6 +114,9 @@ void Walker::run(int ContVal) {
         int pForward = calcScurve(1.2, 100, 5, 1, true);
         rightPWM = pForward;
         leftPWM =  pForward;
+    } else if(mTurn == RIGHT) {
+        rightPWM = 0;
+        leftPWM = mForward;
     }
    
     mRightWheel.setPWM(rightPWM);

@@ -43,3 +43,11 @@ bool LineMonitor::isOnLine() const {
 void LineMonitor::setThreshold(int8_t threshold) {
     mThreshold = threshold;
 }
+
+bool LineMonitor::RedDetector() {
+    if (mColorSensor.getColorNumber() == 5) {
+        return true;
+    } else {
+        return false;
+    }
+}

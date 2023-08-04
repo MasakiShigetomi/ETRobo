@@ -18,6 +18,7 @@ public:
 
     bool isOnLine() const;
     void setThreshold(int8_t threshold);
+    bool RedDetector();
 
 private:
     static const int8_t INITIAL_THRESHOLD;

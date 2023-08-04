@@ -22,7 +22,7 @@ public:
     static const int HIGH;
     
     static const int STRAIGHT;
-    static const int RIGHT;
+    static const int RIGHTS;
     static const int LEFT;
     static const int STOP;
     static const int BACK;
@@ -32,6 +32,7 @@ public:
     static const int ACLOCKWISE;
     static const int LINETRACE;
     static const int STRAIGHTS;
+    static const int RIGHT;
 
     Walker(ev3api::Motor& leftWheel,
                     ev3api::Motor& rightWheel,

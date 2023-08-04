@@ -86,10 +86,11 @@ void ScenarioTracer::setCommand(SceneCommands command) {
 /**
  * シーン変更処理
  */
-void ScenarioTracer::modeChangeAction() {
-    mScenario->next();
+void ScenarioTracer::modeChangeAction() {   //シーンを進め、Walkerクラスに現在シーンを設定する
+    mScenario->next();  //次のシーンに進む
     
-    SceneCommands command = mScenario->currentSceneCommand();
+    
+    SceneCommands command = mScenario->currentSceneCommand();   // 現在シーンコマンド取得
     setCommand(command);
     mWalker->setup();
     mSimpleTimer->setTime(mScenario->currentSceneTime());

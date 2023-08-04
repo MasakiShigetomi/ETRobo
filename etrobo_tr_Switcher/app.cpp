@@ -45,17 +45,20 @@ static DistanceTracker *gDistanceTracker;
 
 // scene object
 static Scene gScenes[] = {
-    // { LINE_TRACING, 100000 * 1000, 0 }, //ライントレーステスト
-    { GO_STRAIGHT, 6200 * 1000, 0 },  // 直進5秒
-    { TURN_RIGHT, 6460 * 1000, 0 },  // 直進2秒
-    { STOP_HERE, 2000 * 1000, 0 },
-    { BACK_STRAIGHT, 1000 * 1000, 0 }, 
-    { STOP_HERE, 2000 * 1000, 0 },
-    { TURN_LEFT, 660 * 1000, 0 },
-    { STOP_HERE, 2000 * 1000, 0 },
-    // { GO_STRAIGHT_S, 6000 * 1000, 0 },
-    // { GO_STRAIGHT, 4000 * 1000, 0 },
-    // { BACK_RIGHT, 480 * 1000, 0 },
+    { LINE_TRACING, 6000 * 1000, 0 },
+    // { GO_STRAIGHT, 6200 * 1000, 0 },
+    // { TURN_RIGHT_S, 6460 * 1000, 0 },
+    // { STOP_HERE, 2000 * 1000, 0 },
+    // { BACK_STRAIGHT, 1000 * 1000, 0 },
+    // { STOP_HERE, 2000 * 1000, 0 },
+    // { TURN_LEFT, 660 * 1000, 0 },
+    //{ STOP_HERE, 2000 * 1000, 0 },
+    // { TURN_RIGHT, 4000 * 1000, 0 },
+    { GO_STRAIGHT_S, 2320 * 1000, 0 },
+    //{ STOP_HERE, 1000 * 1000, 0 },
+    { GO_STRAIGHT, 2000 * 1000, 0 },
+    // { STOP_HERE, 2000 * 1000, 0 },
+    // { BACK_RIGHT, 520 * 1000, 0 },
     // { STOP_HERE, 2000 * 1000, 0 },
     // { GO_STRAIGHT_S, 6000 * 1000, 0 },
     // { STOP_HERE, 20000000 * 1000, 0 }
@@ -89,7 +92,8 @@ static void user_system_create() {
     gScenarioTracer  = new ScenarioTracer(gWalker,
                                           gLineTracer,
                                           gScenario,
-                                          gScenarioTimer);
+                                          gScenarioTimer,
+                                          gLineMonitor);
     gRandomWalker    = new RandomWalker(gLineTracer,
                                         gScenarioTracer,
                                         gStarter,
