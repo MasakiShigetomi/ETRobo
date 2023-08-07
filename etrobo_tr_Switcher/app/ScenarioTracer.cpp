@@ -24,8 +24,15 @@ ScenarioTracer::ScenarioTracer(Walker* walker,
       mScenario(scenario),
       mSimpleTimer(timer),
       mState(UNDEFINED),
-      mLineMonitor(linemonitor) {
+      mLineMonitor(linemonitor),
+      redDetectorFlag(true) {
 }
+
+//シーン変更回数
+int cnt = 0;
+
+//シーン変更既定回数
+int redDetectorFlagOn = 1;
 
 /**
  * シナリオトレースする
@@ -106,6 +113,16 @@ void ScenarioTracer::setCommand(SceneCommands command) {
  */
 void ScenarioTracer::modeChangeAction() {   //シーンを進め、Walkerクラスに現在シーンを設定する
     mScenario->next();  //次のシーンに進む
+
+    printf("%s", (redDetectorFlag)? "TRUE\n" : "FALSE\n");
+    if (cnt == redDetectorFlagOn) {
+      redDetectorFlag = true;
+      cnt++;
+    }
+    if (!redDetectorFlag) {
+      cnt++;
+    }
+
     
     
     SceneCommands command = mScenario->currentSceneCommand();   // 現在シーンコマンド取得
@@ -139,10 +156,13 @@ void ScenarioTracer::execInitial() {
 void ScenarioTracer::execWalking() {
     mWalker->run();             // do アクティビティ
 
-    if (mLineMonitor->RedDetector()) {
+    if (redDetectorFlag) {
+      if (mLineMonitor->redDetector()) {
         modeChangeAction();
+        redDetectorFlag = false;
+      }
     }
-    else if (mSimpleTimer->isTimedOut()) {   // イベントチェック
+    if (mSimpleTimer->isTimedOut()) {   // イベントチェック
         mSimpleTimer->stop();   // exit アクション
 
         modeChangeAction();    // entry アクション(WALKING)

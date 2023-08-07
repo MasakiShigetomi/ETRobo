@@ -44,7 +44,7 @@ void LineMonitor::setThreshold(int8_t threshold) {
     mThreshold = threshold;
 }
 
-bool LineMonitor::RedDetector() {
+bool LineMonitor::redDetector() {
     if (mColorSensor.getColorNumber() == 5) {
         return true;
     } else {

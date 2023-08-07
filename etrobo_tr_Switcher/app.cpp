@@ -45,23 +45,23 @@ static DistanceTracker *gDistanceTracker;
 
 // scene object
 static Scene gScenes[] = {
-    { LINE_TRACING, 6000 * 1000, 0 },
     // { GO_STRAIGHT, 6200 * 1000, 0 },
     // { TURN_RIGHT_S, 6460 * 1000, 0 },
     // { STOP_HERE, 2000 * 1000, 0 },
     // { BACK_STRAIGHT, 1000 * 1000, 0 },
     // { STOP_HERE, 2000 * 1000, 0 },
     // { TURN_LEFT, 660 * 1000, 0 },
-    //{ STOP_HERE, 2000 * 1000, 0 },
+    // { STOP_HERE, 2000 * 1000, 0 },
     // { TURN_RIGHT, 4000 * 1000, 0 },
-    { GO_STRAIGHT_S, 2320 * 1000, 0 },
-    //{ STOP_HERE, 1000 * 1000, 0 },
+    { LINE_TRACING, 6000 * 1000, 0 },
+    { GO_STRAIGHT_S, 1880 * 1000, 0 },
+    { STOP_HERE, 1000 * 1000, 0 },
     { GO_STRAIGHT, 2000 * 1000, 0 },
-    // { STOP_HERE, 2000 * 1000, 0 },
-    // { BACK_RIGHT, 520 * 1000, 0 },
-    // { STOP_HERE, 2000 * 1000, 0 },
-    // { GO_STRAIGHT_S, 6000 * 1000, 0 },
-     { STOP_HERE, 20000000 * 1000, 0 }
+    { STOP_HERE, 1000 * 1000, 0 },
+    { BACK_RIGHT, 520 * 1000, 0 },
+    //{ STOP_HERE, 2000 * 1000, 0 },
+    { GO_STRAIGHT_S, 6000 * 1000, 0 },
+    { STOP_HERE, 2000000 * 1000, 0 }
 };
 
 /**

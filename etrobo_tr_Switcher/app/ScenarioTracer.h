@@ -38,6 +38,7 @@ private:
     SimpleTimer* mSimpleTimer;
     State mState;
     LineMonitor* mLineMonitor;
+    bool redDetectorFlag;   //trueの時は赤色検知オン、falseの時は赤色検知オフ
 
     void initAction();
     void setCommand(SceneCommands command);
