@@ -29,6 +29,8 @@ struct Scene {
     SceneCommands command;
     int           time;
     Scene*        next;
+    //
+    int           speed;
 };
 
 #endif  // EV3_APP_SCENE_H_

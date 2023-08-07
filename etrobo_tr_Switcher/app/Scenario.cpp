@@ -80,3 +80,8 @@ SceneCommands Scenario::currentSceneCommand() const {
 uint32_t Scenario::currentSceneTime() const {
     return (mCurrentScene == 0) ? 0 : mCurrentScene->time;
 }
+
+//
+Scenario::currentSceneSpeed() const {
+    return (mCurrentScene == 0) ? 0 : mCurrentScene->speed;
+}

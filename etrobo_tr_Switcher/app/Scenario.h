@@ -22,6 +22,8 @@ public:
     Scene* next();
     SceneCommands currentSceneCommand() const;
     uint32_t currentSceneTime() const;
+    //
+    currentSceneSpeed() const;
 
 private:
     Scene* mTopScene;

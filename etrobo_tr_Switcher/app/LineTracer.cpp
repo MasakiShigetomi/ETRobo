@@ -59,6 +59,3 @@ float LineTracer::calc_prop_value(float color_val) {
 
     return p + i + d;
 }
-
-
-

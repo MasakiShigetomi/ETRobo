@@ -123,8 +123,7 @@ void ScenarioTracer::modeChangeAction() {   //シーンを進め、Walkerクラ�
       cnt++;
     }
 
-    
-    
+
     SceneCommands command = mScenario->currentSceneCommand();   // 現在シーンコマンド取得
     setCommand(command);
     mWalker->setup();
