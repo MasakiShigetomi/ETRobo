@@ -82,6 +82,6 @@ uint32_t Scenario::currentSceneTime() const {
 }
 
 //
-Scenario::currentSceneSpeed() const {
-    return (mCurrentScene == 0) ? 0 : mCurrentScene->speed;
+SceneSpeeds Scenario::currentSceneSpeed() const {
+    return (mCurrentScene == 0) ? LOW : mCurrentScene->speed;
 }

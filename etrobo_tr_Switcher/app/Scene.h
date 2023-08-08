@@ -25,12 +25,19 @@ enum SceneCommands {
     TURN_RIGHT
 };
 
+//
+enum SceneSpeeds {
+    LOW,
+    MID,
+    HIGH
+};
+
 struct Scene {
     SceneCommands command;
     int           time;
     Scene*        next;
     //
-    int           speed;
+    SceneSpeeds   speed;
 };
 
 #endif  // EV3_APP_SCENE_H_

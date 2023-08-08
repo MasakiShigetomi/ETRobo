@@ -105,9 +105,27 @@ void ScenarioTracer::setCommand(SceneCommands command) {
       printf("TURN_RIGHT");
     }
 
-    mWalker->setCommand(Walker::HIGH,turn);
+    mWalker->setCommand(turn);
   }
-    
+
+//
+void ScenarioTracer::setSpeed(SceneSpeeds speed) {
+    int forward = -2;
+
+    if (speed == LOW) {
+      forward = Walker::LOW;
+      printf("LOW");
+    } else if (speed == MID) {
+      forward = Walker::MID;
+      printf("MID");
+    } else if (speed == HIGH) {
+      forward = Walker::HIGH;
+      printf("HIGH");
+    }
+
+    mWalker->setSpeed(forward);
+}
+
 /**
  * シーン変更処理
  */
@@ -129,6 +147,8 @@ void ScenarioTracer::modeChangeAction() {   //シーンを進め、Walkerクラ�
     mWalker->setup();
     mSimpleTimer->setTime(mScenario->currentSceneTime());
     mSimpleTimer->start();
+    SceneSpeeds speed = mScenario->currentSceneSpeed();
+    setSpeed(speed);
 }
 
 /**

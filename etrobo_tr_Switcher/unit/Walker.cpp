@@ -13,19 +13,19 @@
 #include "Clock.h"
 
 // 定数宣言
-const int Walker::LOW    = 30;    // 低速
-const int Walker::NORMAL = 50;    // 通常
-const int Walker::HIGH   = 100;    // 高速
+const int Walker::LOW  = 30;    // 低速
+const int Walker::MID  = 50;    // 通常
+const int Walker::HIGH  = 100;    // 高速
 
-const int Walker::STRAIGHT = 0;
+const int Walker::STRAIGHT  = 0;
 const int Walker::RIGHTS  = 1;     // 左方向
-const int Walker::LEFT   = 2;     // 右方向
-const int Walker::STOP   = 3;
-const int Walker::BACK   = 4;
+const int Walker::LEFT  = 2;     // 右方向
+const int Walker::STOP  = 3;
+const int Walker::BACK  = 4;
 const int Walker::BACKRIGHT  = 5;
-const int Walker::BACKLEFT   = 6;
+const int Walker::BACKLEFT  = 6;
 const int Walker::CLOCKWISE  = 7;
-const int Walker::ACLOCKWISE = 8;
+const int Walker::ACLOCKWISE  = 8;
 const int Walker::LINETRACE  = 9;
 const int Walker::STRAIGHTS  = 10;
 const int Walker::RIGHT  = 11;
@@ -46,7 +46,7 @@ Walker::Walker(ev3api::Motor& leftWheel,
                                  LineTracer* lineTracer)
     : mLeftWheel(leftWheel),
       mRightWheel(rightWheel),
-      mForward(LOW),
+      mForward(HIGH),
       mTurn(RIGHTS),
       mSimpleTimer(WTimer),
       mLineTracer(lineTracer) {
@@ -115,7 +115,7 @@ void Walker::run(int ContVal) {
         rightPWM = pForward;
         leftPWM =  pForward;
     } else if(mTurn == RIGHT) {
-        rightPWM = 0;
+        rightPWM = mForward;
         leftPWM = mForward;
     }
    
@@ -139,9 +139,13 @@ void Walker::init() {
  * @param forward 前進値
  * @param turn    旋回方向
  */
-void Walker::setCommand(int forward, int turn) {
+void Walker::setCommand(int turn) {
+    //mForward = forward;
+    mTurn = turn;
+}
+//
+void  Walker::setSpeed(int forward) {
     mForward = forward;
-    mTurn    = turn;
 }
 
 void Walker::setup() {

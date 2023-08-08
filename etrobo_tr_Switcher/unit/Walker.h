@@ -18,7 +18,7 @@
 class Walker {
 public:
     static const int LOW;
-    static const int NORMAL;
+    static const int MID;
     static const int HIGH;
     
     static const int STRAIGHT;
@@ -41,7 +41,8 @@ public:
 
     void init();
     void run(int ContVal = 10000);
-    void setCommand(int forward, int turn);
+    void setCommand(int turn);
+    void setSpeed(int forward);
     void setup();
     int calcScurve(float AT, int Pmax, int Pmin, int repeat, bool accel);
 

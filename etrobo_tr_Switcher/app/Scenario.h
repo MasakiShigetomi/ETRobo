@@ -23,7 +23,7 @@ public:
     SceneCommands currentSceneCommand() const;
     uint32_t currentSceneTime() const;
     //
-    currentSceneSpeed() const;
+    SceneSpeeds currentSceneSpeed() const;
 
 private:
     Scene* mTopScene;

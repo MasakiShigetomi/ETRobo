@@ -46,6 +46,8 @@ private:
     void execUndefined();
     void execInitial();
     void execWalking();
+    //
+    void setSpeed(SceneSpeeds speed);
 };
 
 #endif  // EV3_APP_SCENARIOTRACER_H_
