@@ -32,7 +32,7 @@ ScenarioTracer::ScenarioTracer(Walker* walker,
 int cnt = 0;
 
 //シーン変更既定回数
-int redDetectorFlagOn = 1;
+int redDetectorFlagOn = 3;
 
 /**
  * シナリオトレースする

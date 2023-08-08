@@ -68,7 +68,7 @@ void Walker::run(int ContVal) {
     int leftPWM = 0;
     
     if(mTurn == STRAIGHT) {
-        int pForward = calcScurve(1.2, 100, 5, 1, true);
+        int pForward = calcScurve(1.2, mForward, 5, 1, true);
         rightPWM = -pForward; //モーターにパワーを設定する
         leftPWM =  -pForward;
         
@@ -111,11 +111,11 @@ void Walker::run(int ContVal) {
         leftPWM = (mForward + pidVAL) * 0.6;
     
     } else if(mTurn == STRAIGHTS) {
-        int pForward = calcScurve(1.2, 100, 5, 1, true);
+        int pForward = calcScurve(1.2, mForward, 5, 1, true);
         rightPWM = pForward;
         leftPWM =  pForward;
     } else if(mTurn == RIGHT) {
-        rightPWM = mForward;
+        rightPWM = 0;
         leftPWM = mForward;
     }
    
