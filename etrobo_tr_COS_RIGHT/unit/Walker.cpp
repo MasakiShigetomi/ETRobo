@@ -149,12 +149,14 @@ void Walker::setCommand(int forward, int turn) {
     mForward = forward;
     mTurn    = turn;
 }
-
+//コメントアウト例
+// ADD 2023/10/01 システム改修 Start
 void Walker::setup() {
     printf("RESET!!!");
     prev_time_sum = 0;
     counter = 0;
 }
+// ADD 2023/10/01 システム改修 End
 
 /**
  * Sカーブの計算(加速時間、最大速度、最小速度、繰り返し回数(デフォは1回)、開始速度(trueでmin→max))
