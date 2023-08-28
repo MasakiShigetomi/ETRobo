@@ -28,7 +28,3 @@ APPL_DIRS += $(mkfile_path)app $(mkfile_path)unit
 INCLUDES += \
 	-I$(mkfile_path)app \
 	-I$(mkfile_path)unit
-
-COPTS += -DMAKE_RIGHT
-
-COPTS += -DMAKE_EV3
