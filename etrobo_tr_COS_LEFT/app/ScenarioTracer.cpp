@@ -62,40 +62,58 @@ void ScenarioTracer::setCommand(SceneCommands command) {
     
     if (command == GO_FORWARD) {
       turn = Walker::FORWARD;
+      printf("GO_FORWARD\n");
     } else if (command == S_FORWARD) {
       turn = Walker::SFORWARD;
+      printf("S_FORWARD\n");
     } else if (command == GO_BACK) {
       turn = Walker::BACKWARD;
+      printf("GO_BACK\n");
     } else if (command == S_BACK) {
       turn = Walker::SBACKWARD;
+      printf("S_BACK\n");
     } else if (command == TURN_RIGHT) {
       turn = Walker::RIGHT;
+      printf("TURN_RIGHT\n");
     } else if (command == S_RIGHT) {
       turn = Walker::SRIGHT;
+      printf("S_RIGHT\n");
     } else if (command == BACK_RIGHT) {
       turn = Walker::BACKRIGHT;
+      printf("BACK_RIGHT\n");
     } else if (command == S_BACKRIGHT) {
       turn = Walker::SBACKRIGHT;
+      printf("S_BACKRIGHT\n");
     } else if (command == TURN_LEFT) {
       turn = Walker::LEFT;
+      printf("TURN_LEFT\n");
     } else if (command == S_LEFT) {
       turn = Walker::SLEFT;
+      printf("S_LEFT\n");
     } else if (command == BACK_LEFT) {
       turn = Walker::BACKLEFT;
+      printf("BACK_LEFT\n");
     } else if (command == S_BACKLEFT) {
       turn = Walker::SBACKLEFT;
+      printf("S_BACKLEFT\n");
     } else if (command == ROLL_RIGHT) {
       turn = Walker::ROLLRIGHT;
+      printf("ROLL_RIGHT\n");
     } else if (command == ROLL_LEFT) {
       turn = Walker::ROLLLEFT;
+      printf("ROLL_LEFT\n");
     } else if (command == STOP_HERE) {
       turn = Walker::STOP;
-    } else if (command == SAFE_STOP) {
-      turn = Walker::SAFESTOP;
-    } else if (command == BSAFE_STOP) {
-      turn = Walker::BSAFESTOP;
+      printf("STOP_HERE\n");
+    } else if (command == S_STOP) {
+      turn = Walker::SSTOP;
+      printf("S_STOP\n");
+    } else if (command == B_ADJUST) {
+      turn = Walker::BACKADJUST;
+      printf("B_ADJUST\n");
     } else if (command == LINE_TRACE) {
       turn = Walker::LINETRACE;
+      printf("LINE_TRACE\n");
     }
 
     mWalker->setCommand(turn);
@@ -104,20 +122,20 @@ void ScenarioTracer::setCommand(SceneCommands command) {
 void ScenarioTracer::setTask(SceneTasks taskcom) {
     int task = 0;
     if (taskcom == TIME_OUT) {
-      printf("TIMETASKREADING");
       task = SceneChanger::TIMEOUT;
+      printf("TIMETASK_COUNTING\n");
     } else if(taskcom == LOOK_GREEN) {
-      printf("COLORTASKREADING");
       task = SceneChanger::LOOKGREEN;
+      printf("COLORTASK_GREEN\n");
     } else if(taskcom == LOOK_BLACK) {
-      printf("COLORTASKREADING");
       task = SceneChanger::LOOKBLACK;
+      printf("COLORTASK_BLACK\n");
     } else if(taskcom == LOOK_WHITE) {
-      printf("COLORTASKREADING");
       task = SceneChanger::LOOKWHITE;
+      printf("COLORTASK_WHITE\n");
     } else if(taskcom == LOOK_RED) {
-      printf("COLORTASKREADING");
       task = SceneChanger::LOOKRED;
+      printf("COLORTASK_RED\n");
     }
 
     mSceneChanger->setTask(task);
@@ -129,13 +147,10 @@ void ScenarioTracer::setSpeed(SceneSpeeds speed) {
 
     if (speed == LOW) {
       forward = Walker::LOW;
-      printf("LOW");
     } else if (speed == MID) {
       forward = Walker::MID;
-      printf("MID");
     } else if (speed == HIGH) {
       forward = Walker::HIGH;
-      printf("HIGH");
     }
 
     mWalker->setSpeed(forward);

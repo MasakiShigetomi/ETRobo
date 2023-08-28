@@ -22,6 +22,7 @@ public:
     static const int HIGH;
     
     static const int FORWARD;
+    static const int SFORWARD;
     static const int BACKWARD;
     static const int SBACKWARD;
     static const int RIGHT;
@@ -35,12 +36,11 @@ public:
     static const int ROLLRIGHT;
     static const int ROLLLEFT;
     static const int STOP;
-    static const int SAFESTOP;
-    static const int BSAFESTOP;
-    static const int SFORWARD;
+    static const int SSTOP;
+    static const int BACKADJUST;
     static const int LINETRACE;
 
-    Walker(ev3api::Motor& leftWheel
+    Walker(ev3api::Motor& leftWheel,
                     ev3api::Motor& rightWheel,
                     SimpleTimer* WTimer,
                     LineTracer* lineTracer);
