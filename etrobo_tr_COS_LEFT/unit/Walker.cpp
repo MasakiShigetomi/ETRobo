@@ -32,8 +32,8 @@ const int Walker::SBACKLEFT = 11;
 const int Walker::ROLLRIGHT = 12;
 const int Walker::ROLLLEFT  = 13;
 const int Walker::STOP  = 14;
-const int Walker::SAFESTOP  = 15;
-const int Walker::BSAFESTOP  = 16;
+const int Walker::SSTOP  = 15;
+const int Walker::BACKADJUST  = 16;
 const int Walker::LINETRACE  = 17;
 
 float pForward;
@@ -92,7 +92,7 @@ void Walker::run(int ContVal) {
         leftPWM =  -pForward; 
 
     } else if(mTurn == RIGHT) {
-        rightPWM = 0;
+        rightPWM = -mForward;
         leftPWM =  mForward;
 
     } else if(mTurn == SRIGHT) {
@@ -106,12 +106,12 @@ void Walker::run(int ContVal) {
     
     } else if(mTurn == SBACKRIGHT) {
         int pForward = calcScurve(2.18, mForward, 52, 2, false);
-        rightPWM = -pForward; 
-        leftPWM =  mForward;
+        rightPWM = -mForward; 
+        leftPWM =  -pForward;
 
     } else if(mTurn == LEFT) {
         rightPWM = mForward; 
-        leftPWM =  0;
+        leftPWM =  -mForward;
 
     } else if(mTurn == SLEFT) {
         int pForward = calcScurve(2, mForward, 38, 2, false);
@@ -128,7 +128,7 @@ void Walker::run(int ContVal) {
         leftPWM =  -pForward;
 
     } else if(mTurn == ROLLRIGHT) {
-        rightPWM = -20;
+        rightPWM = -20; 
         leftPWM =  20;
 
     } else if(mTurn == ROLLLEFT) {
@@ -139,12 +139,12 @@ void Walker::run(int ContVal) {
         rightPWM = 0;
         leftPWM =  0;
 
-    } else if(mTurn == SAFESTOP) {
-        int pForward = calcScurve(0.6, mForward, 0, 1, false);
-        rightPWM = pForward;
-        leftPWM =  pForward;
+    } else if(mTurn == SSTOP) {
+        int pForward = calcScurve(1.2, mForward, 0, 1, true);
+        rightPWM = pForward; 
+        leftPWM =  pForward; 
 
-    } else if(mTurn == BSAFESTOP) {
+    } else if(mTurn == BACKADJUST) {
         int pForward = calcScurve(0.6, mForward, 0, 1, false);
         rightPWM = -pForward;
         leftPWM =  -pForward;
@@ -186,7 +186,7 @@ void  Walker::setSpeed(int forward) {
 //コメントアウト例
 // ADD 2023/10/01 システム改修 Start
 void Walker::setup() {
-    printf("RESET!!!");
+    //printf("RESET!!!");
     prev_time_sum = 0;
     counter = 0;
 }

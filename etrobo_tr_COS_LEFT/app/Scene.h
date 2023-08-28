@@ -25,8 +25,8 @@ enum SceneCommands {
     ROLL_RIGHT,
     ROLL_LEFT,
     STOP_HERE,
-    SAFE_STOP,
-    BSAFE_STOP,
+    S_STOP,
+    B_ADJUST,
     LINE_TRACE
 };
 
