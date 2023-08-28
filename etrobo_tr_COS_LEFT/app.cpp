@@ -72,14 +72,13 @@ static Scene gScenes[] = {
     { S_BACK, TIME_OUT, 4840 * 1000, 0, LOW },       //バック
     { STOP_HERE, TIME_OUT, 1000 * 1000, 0 },           //赤検知後一時停止・ブロック運び完了
     //逆側ライン到達まで
-    { TURN_RIGHT, TIME_OUT, 240 * 1000, 0, HIGH },     //右に旋回 
+    { TURN_RIGHT, TIME_OUT, 252 * 1000, 0, HIGH },     //右に旋回 
     { S_FORWARD, TIME_OUT, 5200 * 1000, 0, HIGH },     //逆側のラインへ前進
     { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0 }, //白検知
     { GO_FORWARD, LOOK_BLACK, 100000 * 1000, 0 }, //黒検知
     { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0 }, //白検知
-    //{ BSAFE_STOP, TIME_OUT, 500 * 1000, 0 },
-    { STOP_HERE, TIME_OUT, 400 * 1000, 0 }, //位置調整
-    { B_ADJUST, TIME_OUT, 300 * 1000, 0, HIGH },
+    { STOP_HERE, TIME_OUT, 400 * 1000, 0 },     //一時停止
+    { B_ADJUST, TIME_OUT, 300 * 1000, 0, HIGH },    //位置調整
     { ROLL_LEFT, LOOK_BLACK, 100000 * 1000, 0 }, //ライン上に合わせる
     { ROLL_LEFT, LOOK_WHITE, 100000 * 1000, 0 }, 
     { LINE_TRACE, TIME_OUT, 100000 * 1000, 0, LOW }, //ライントレース開始
