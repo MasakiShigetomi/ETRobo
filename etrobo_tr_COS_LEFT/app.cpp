@@ -46,43 +46,35 @@ static DistanceTracker *gDistanceTracker;
 
 // scene object
 static Scene gScenes[] = {
-    // //ポール倒しまで
-    // { S_BACK, TIME_OUT, 6200 * 1000, 0, HIGH },        //バック走行
-    // { S_BACKRIGHT, TIME_OUT, 4360 * 1000, 0, HIGH },   //中間ゲート通過
-    // { GO_BACK, TIME_OUT, 2000 * 1000, 0, HIGH },       //ポールまで
-    // { B_ADJUST, TIME_OUT, 600 * 1000, 0, HIGH },       //ポール倒し
-    // //ライン復帰まで
-    // { S_FORWARD, TIME_OUT, 1400 * 1000, 0, HIGH },     //前進
-    // { S_LEFT, TIME_OUT, 5000 * 1000, 0, HIGH },        //左へ旋回
-    // { GO_FORWARD, LOOK_GREEN, 100000 * 1000, 0, LOW }, //緑検知
-    // { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0, LOW }, //白検知
-    // { GO_FORWARD, LOOK_BLACK, 100000 * 1000, 0, LOW }, //黒検知
-    // { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0, LOW }, //白検知
-    // { STOP_HERE, TIME_OUT, 400 * 1000, 0 },      //一時停止
-    // { B_ADJUST, TIME_OUT, 300 * 1000, 0, HIGH },       //位置調整
-    // { ROLL_RIGHT, LOOK_BLACK, 100000 * 1000, 0 }, //ラインを探す
-    // { ROLL_RIGHT, LOOK_WHITE, 100000 * 1000, 0 }, //ライン上に合わせる
-    { LINE_TRACE, TIME_OUT, 2400 * 1000, 0, HIGH },  //ライン復帰・トレース開始
-    { LINE_TRACE, LOOK_RED, 100000 * 1000, 0, LOW },
-    //ブロック運び完了まで
-    //{ STOP_HERE, TIME_OUT, 2000 * 1000, 0 },           //赤検知後一時停止・赤検知でシナリオトレースに切替
-    { S_FORWARD, TIME_OUT, 5880 * 1000, 0, LOW },      //ブロック運び開始
-    { STOP_HERE, TIME_OUT, 1000 * 1000, 0 },           //一時停止  
-    //{ BACK_RIGHT, TIME_OUT, 28 * 1000, 0, LOW },       //右に旋回
-    { S_BACK, TIME_OUT, 4840 * 1000, 0, LOW },       //バック
-    { STOP_HERE, TIME_OUT, 1000 * 1000, 0 },           //赤検知後一時停止・ブロック運び完了
-    //逆側ライン到達まで
-    { TURN_RIGHT, TIME_OUT, 252 * 1000, 0, HIGH },     //右に旋回 
-    { S_FORWARD, TIME_OUT, 5200 * 1000, 0, HIGH },     //逆側のラインへ前進
-    { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0 }, //白検知
-    { GO_FORWARD, LOOK_BLACK, 100000 * 1000, 0 }, //黒検知
-    { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0 }, //白検知
-    { STOP_HERE, TIME_OUT, 400 * 1000, 0 },     //一時停止
-    { B_ADJUST, TIME_OUT, 300 * 1000, 0, HIGH },    //位置調整
-    { ROLL_LEFT, LOOK_BLACK, 100000 * 1000, 0 }, //ライン上に合わせる
-    { ROLL_LEFT, LOOK_WHITE, 100000 * 1000, 0 }, 
-    { LINE_TRACE, TIME_OUT, 100000 * 1000, 0, LOW }, //ライントレース開始
-    { STOP_HERE, TIME_OUT, 2000000 * 1000, 0 }         //一時停止
+    // { LINE_TRACING, TIME_OUT, 100000 * 1000, 0 }, //ライントレーステスト
+    { S_BACK, TIME_OUT, 6200 * 1000, 0, HIGH },
+    { S_BACKRIGHT, TIME_OUT, 4360 * 1000, 0, HIGH },  //中間ゲート通過
+    { GO_BACK, TIME_OUT, 2000 * 1000, 0, HIGH }, 
+    { SAFE_STOP, TIME_OUT, 600 * 1000, 0, HIGH },  //ポール倒し
+    { GO_FORWARD, TIME_OUT, 1400 * 1000, 0, HIGH },
+    { S_LEFT, TIME_OUT, 5000 * 1000, 0, HIGH },
+    { GO_FORWARD, LOOK_GREEN, 100000 * 1000, 0, LOW }, //緑検知
+    { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0, LOW }, //白検知
+    { GO_FORWARD, LOOK_BLACK, 100000 * 1000, 0, LOW }, //黒検知
+    { GO_FORWARD, LOOK_WHITE, 100000 * 1000, 0, LOW }, //白検知
+    //{ BSAFE_STOP, TIME_OUT, 500 * 1000, 0 },
+    { STOP_HERE, TIME_OUT, 400 * 1000, 0, HIGH }, //位置調整
+    { SAFE_STOP, TIME_OUT, 300 * 1000, 0, HIGH },
+    { ROLL_RIGHT, LOOK_BLACK, 100000 * 1000, 0, LOW }, //ライン上に合わせる
+    { ROLL_RIGHT, LOOK_WHITE, 100000 * 1000, 0, LOW }, 
+    { LINE_TRACE, LOOK_RED, 100000 * 1000, 0, HIGH }, //ライントレース開始
+    // { STOP_HERE, TIME_OUT, 1000 * 1000, 0 },
+    // { LINE_TRACING, 8000 * 1000, 0, MID },     //↓ここからブロック運び
+    //{ TURN_RIGHT_S, TIME_OUT, 20 * 1000, 0, LOW },
+    // { START_BACK, TIME_OUT, 6220 * 1000, 0, LOW },
+    // { STOP_HERE, TIME_OUT, 1000 * 1000, 0 },
+    // //{ BACK_RIGHT, TIME_OUT, 20 * 1000, 0, LOW },
+    // { GO_STRAIGHT, LOOK_RED, 100000 * 1000, 0, MID },
+    // { STOP_HERE, TIME_OUT, 1000 * 1000, 0 },
+    // { BACK_RIGHT, TIME_OUT, 540 * 1000, 0, HIGH },
+    // //{ STOP_HERE, TIME_OUT, 2000 * 1000, 0 },
+    // { START_BACK, TIME_OUT, 6000 * 1000, 0, HIGH },
+    { STOP_HERE, TIME_OUT, 2000000 * 1000, 0 }
 };
 
 /**
